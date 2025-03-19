@@ -31,7 +31,24 @@ jobs:
           wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
           sudo dpkg -i crowdin.deb
 
+      - name: Get branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Print current branch name
+        run: echo "Current branch is ${{ steps.get_branch.outputs.branch_name }}"
+
+      - name: Check if branch exists
+        id: check_branch
+        run: |
+          if crowdin branch list --config app/crowdin.yml | grep -q "testing2"; then
+            echo "branch_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "branch_exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create branch
+        if: steps.check_branch.outputs.branch_exists == 'false'
         run: crowdin branch add testing2 --config app/crowdin.yml
         # run: crowdin branch add ${{ github.head_ref }}
       
