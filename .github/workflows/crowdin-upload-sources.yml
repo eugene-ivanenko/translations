@@ -27,7 +27,8 @@ jobs:
           wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
           sudo dpkg -i crowdin.deb
       - name: Create branch
-        run: crowdin branch add ${{ github.head_ref }}
+        run: crowdin branch add testing2
+        # run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
     name: Upload Sources to Crowdin
     environment: Staging
