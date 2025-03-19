@@ -17,20 +17,20 @@ on:
     #   - closed
 
 jobs:
-  create-branch-on-crowdin:
-    name: Create Branch on Crowdin
-    environment: Staging
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install crowdin
-        run: |
-          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
-          sudo dpkg -i crowdin.deb
-      - name: Create branch
-        run: crowdin branch add testing2 --config app/crowdin.yml
-        # run: crowdin branch add ${{ github.head_ref }}
+  # create-branch-on-crowdin:
+  #   name: Create Branch on Crowdin
+  #   environment: Staging
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Install crowdin
+  #       run: |
+  #         wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+  #         sudo dpkg -i crowdin.deb
+  #     - name: Create branch
+  #       run: crowdin branch add testing2 --config app/crowdin.yml
+  #       # run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
     name: Upload Sources to Crowdin
     environment: Staging
@@ -38,6 +38,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install crowdin
+        run: |
+          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+          sudo dpkg -i crowdin.deb
+
+      - name: Create branch
+        run: crowdin branch add testing2 --config app/crowdin.yml
+        # run: crowdin branch add ${{ github.head_ref }}
       
       - name: Upload sources
         uses: crowdin/github-action@v2
