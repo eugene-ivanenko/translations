@@ -51,7 +51,7 @@ jobs:
         if: steps.check_branch.outputs.branch_exists == 'false'
         run: |
           echo "Creating branch ${{ steps.get_branch.outputs.branch_name }} in Crowdin"
-          crowdin branch add testing2 --config app/crowdin.yml
+          crowdin branch add ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
 
       - name: Branch already exists
         if: steps.check_branch.outputs.branch_exists == 'true'
@@ -67,6 +67,6 @@ jobs:
           upload_translations: false
           download_translations: false
           create_pull_request: false
-          crowdin_branch_name: 'testing2'
+          crowdin_branch_name: '${{ steps.get_branch.outputs.branch_name }}'
 env:
   CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
