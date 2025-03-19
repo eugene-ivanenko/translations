@@ -2,10 +2,10 @@ name: Crowdin Upload Sources
 run-name: Triggered by ${{ github.actor }}
 
 on:
-  pull_request:
+  push:
     # Run on pushes to any 'feature' branch
     branches:
-      - 'develop'
+      - 'main'
     # that changes the sources files in app/src/locales/en/*.po
     # or the Crowdin configuration file 
     # or the action itself
@@ -13,8 +13,8 @@ on:
       - app/src/locales/en/*.po
       - app/crowdin.yml
       - .github/workflows/crowdin-upload-sources.yml
-    types:
-      - closed
+    # types:
+    #   - closed
 
 jobs:
   create-branch-on-crowdin:
@@ -24,10 +24,8 @@ jobs:
     steps:
       - name: Install crowdin
         run: |
-          wget -qO crowdin.zip https://downloads.crowdin.com/cli/v3/crowdin-cli.zip
-          unzip crowdin.zip -d crowdin
-          sudo mv crowdin/crowdin /usr/local/bin/crowdin
-          rm -rf crowdin.zip crowdin
+          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+          sudo dpkg -i crowdin.deb
       - name: Create branch
         run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
