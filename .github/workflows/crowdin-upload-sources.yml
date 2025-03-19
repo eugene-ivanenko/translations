@@ -23,7 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install crowdin
-        run: sudo apt-get install -y crowdin
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget -qO- https://packages.crowdin.com/crowdin.key | sudo apt-key add -
+          echo "deb https://packages.crowdin.com/repo/deb all main" | sudo tee /etc/apt/sources.list.d/crowdin.list
+          sudo apt-get update
+          sudo apt-get install -y crowdin
       - name: Create branch
         run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
