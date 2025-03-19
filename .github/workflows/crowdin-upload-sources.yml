@@ -22,6 +22,8 @@ jobs:
     environment: Staging
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Install crowdin
         run: |
           wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
