@@ -1,0 +1,39 @@
+name: Crowdin Upload Sources
+run-name: Triggered by ${{ github.actor }}
+
+on:
+  pull_request:
+    # Run on pushes to any 'feature' branch
+    branches:
+      - 'develop'
+    # that changes the sources files in app/src/locales/en/*.po
+    # or the Crowdin configuration file 
+    # or the action itself
+    paths:
+      - app/src/locales/en/*.po
+      - app/crowdin.yml
+      - .github/workflows/crowdin-upload-sources.yml
+    types:
+      - closed
+
+jobs:
+  upload-sources-to-crowdin:
+    name: Upload Sources to Crowdin
+    environment: Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Upload sources
+        uses: crowdin/github-action@v2
+        timeout-minutes: 2
+        with:
+          config: 'app/crowdin.yml'
+          upload_sources: true
+          upload_translations: false
+          download_translations: false
+          create_pull_request: false
+          localization_branch_name: 'testing'
+env:
+  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
