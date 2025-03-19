@@ -24,12 +24,10 @@ jobs:
     steps:
       - name: Install crowdin
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget -qO - https://artifacts.crowdin.com/repo/GPG-KEY-crowdin | sudo apt-key add -
-          echo "deb https://packages.crowdin.com/repo/deb all main" | sudo tee /etc/apt/sources.list.d/crowdin.list > /dev/null
-          sudo apt-get update
-          sudo apt-get install -y crowdin
+          wget -qO crowdin.zip https://downloads.crowdin.com/cli/v3/crowdin-cli.zip
+          unzip crowdin.zip -d crowdin
+          sudo mv crowdin/crowdin /usr/local/bin/crowdin
+          rm -rf crowdin.zip crowdin
       - name: Create branch
         run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
