@@ -41,15 +41,21 @@ jobs:
       - name: Check if branch exists
         id: check_branch
         run: |
-          if crowdin branch list --config app/crowdin.yml | grep -q "testing2"; then
+          if crowdin branch list --config app/crowdin.yml | grep -q "${{ steps.get_branch.outputs.branch_name }}"; then
             echo "branch_exists=true" >> $GITHUB_OUTPUT
           else
             echo "branch_exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create branch
+      - name: Create branch if not exists
         if: steps.check_branch.outputs.branch_exists == 'false'
-        run: crowdin branch add testing2 --config app/crowdin.yml
+        run: |
+          echo "Creating branch ${{ steps.get_branch.outputs.branch_name }} in Crowdin"
+          crowdin branch add testing2 --config app/crowdin.yml
+
+      - name: Branch already exists
+        if: steps.check_branch.outputs.branch_exists == 'true'
+        run: echo "Branch ${{ steps.get_branch.outputs.branch_name }} already exists in Crowdin"
         # run: crowdin branch add ${{ github.head_ref }}
       
       - name: Upload sources
