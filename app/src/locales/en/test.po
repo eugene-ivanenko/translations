@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-03-06 10:16+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/modules/owner-statements2/_helpers/duplicateNameError/ErrorMessage.tsx:38
+msgid ". Please enter a unique name."
+msgstr ". Please enter a unique name."
+
+#: src/modules/owner-statements/view/header/Header.tsx:85
+msgid "<0>Invoice number: </0>"
+msgstr "<0>Invoice number: </0>"
