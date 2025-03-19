@@ -25,7 +25,6 @@ jobs:
       - name: Install crowdin
         run: |
           wget -qO - https://artifacts.crowdin.com/repo/GPG-KEY-crowdin | sudo apt-key add -
-          echo "deb https://artifacts.crowdin.com/repo/deb/ /" > /etc/apt/sources.list.d/crowdin.list
           sudo apt-get update && sudo apt-get install crowdin
       - name: Create branch
         run: crowdin branch add ${{ github.head_ref }}
