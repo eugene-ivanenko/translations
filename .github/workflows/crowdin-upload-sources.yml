@@ -2,17 +2,18 @@ name: Crowdin Upload Sources
 run-name: Triggered by ${{ github.actor }}
 
 on:
-  push:
-    # Run on pushes to any 'feature' branch
-    branches:
-      - 'main'
+  # push:
+  #   # Run on pushes to any 'feature' branch
+  #   branches:
+  #     - 'main'
     # that changes the sources files in app/src/locales/en/*.po
     # or the Crowdin configuration file 
     # or the action itself
-    paths:
-      - app/src/locales/en/*.po
-      - app/crowdin.yml
-      - .github/workflows/crowdin-upload-sources.yml
+  workflow_dispatch:
+    # paths:
+    #   - app/src/locales/en/*.po
+    #   - app/crowdin.yml
+    #   - .github/workflows/crowdin-upload-sources.yml
     # types:
     #   - closed
 
