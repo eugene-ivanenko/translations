@@ -17,6 +17,15 @@ on:
       - closed
 
 jobs:
+  create-branch-on-crowdin:
+    name: Create Branch on Crowdin
+    environment: Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install crowdin
+        run: sudo apt-get install -y crowdin
+      - name: Create branch
+        run: crowdin branch add ${{ github.head_ref }}
   upload-sources-to-crowdin:
     name: Upload Sources to Crowdin
     environment: Staging
