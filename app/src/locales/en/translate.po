@@ -25,6 +25,10 @@ msgstr "Add options"
 msgid "Add music"
 msgstr "Add music"
 
-#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:105
+#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:107
 msgid "Add new page"
 msgstr "Add new page"
+
+#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:108
+msgid "Add new pages"
+msgstr "Add new pages"
