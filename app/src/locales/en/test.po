@@ -20,3 +20,8 @@ msgstr ". Please enter a unique name."
 #: src/modules/owner-statements/view/header/Header.tsx:85
 msgid "<0>Invoice number: </0>"
 msgstr "<0>Invoice number: </0>"
+
+#: src/modules/owner-statements2/view/total/editMode/Total.tsx:136
+#: src/modules/owner-statements2/auto/view/total/editMode/Total.tsx:141
+msgid "<0>Please choose formulas to add or subtract<1/>(if they have negative values) expenses and extras<2/>to generate a Grand Total</0>"
+msgstr "<0>Please choose formulas to add or subtract<1/>(if they have negative values) expenses and extras<2/>to generate a Grand Total and some other stuff</0>"
