@@ -23,7 +23,10 @@ jobs:
 
       - name: Get branch name
         id: get_branch
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        run: echo "branch_name=${{ github.event.pull_request.head.ref }}" >> $GITHUB_OUTPUT
+
+      - name: Print branch name
+        run: echo "Merged branch is ${{ steps.get_branch.outputs.branch_name }}"
 
       - name: Remove Crowdin branch
         run: |
