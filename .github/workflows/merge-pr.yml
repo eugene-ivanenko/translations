@@ -28,7 +28,17 @@ jobs:
       - name: Print branch name
         run: echo "Merged branch is ${{ steps.get_branch.outputs.branch_name }}"
 
-      - name: Remove Crowdin branch
+      - name: Check if branch already exists in Crowdin
+        id: check_branch
+        run: |
+          if crowdin branch list --config app/crowdin.yml | grep -q "${{ steps.get_branch.outputs.branch_name }}"; then
+            echo "branch_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "branch_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Remove Crowdin branch if it exists
+        if: steps.check_branch.outputs.branch_exists == 'true'
         run: |
           crowdin branch delete ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
 env:
