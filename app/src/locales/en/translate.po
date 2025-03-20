@@ -13,13 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/listings/details/priceAndFees/upsells/table/Table.tsx:50
-#: src/modules/listings/details/priceAndFees/fees/vrboFees/table/Table.tsx:50
-#: src/modules/listings/details/priceAndFees/fees/hostawayFees/table/Table.tsx:46
-#: src/modules/listings/details/priceAndFees/discounts/hostawayDiscounts/table/Table.tsx:37
-msgid "Actions"
-msgstr "Actions"
-
 #: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:99
 msgid "Add condition"
 msgstr "Add condition"
+
+#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:102
+msgid "Add options"
+msgstr "Add options"
+
+#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:105
+msgid "Add music"
+msgstr "Add music"
