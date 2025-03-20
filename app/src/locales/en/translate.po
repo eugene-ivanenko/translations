@@ -32,3 +32,7 @@ msgstr "Add new page"
 #: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:108
 msgid "Add new pages"
 msgstr "Add new pages"
+
+#: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:108
+msgid "Add some string"
+msgstr "Add some string"
