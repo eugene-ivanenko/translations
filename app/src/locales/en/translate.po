@@ -23,3 +23,12 @@ msgstr "Actions"
 #: src/modules/listings/details/guestPortal/sensitiveInformation/SensitiveInformationSection.tsx:99
 msgid "Add condition"
 msgstr "Add condition"
+
+#: src/modules/listings/details/priceAndFees/discounts/hostawayDiscounts/addEditDiscount/form/AddEditDiscountForm.tsx:76
+#: src/modules/listings/details/priceAndFees/discounts/hostawayDiscounts/addEditDiscount/addButton/AddButton.tsx:43
+msgid "Add discount"
+msgstr "Add discount"
+
+#: src/modules/listings/details/priceAndFees/_helpers/addEditFee/form/AddEditFeeForm.tsx:119
+msgid "Add fee"
+msgstr "Add fee"
