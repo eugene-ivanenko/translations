@@ -1,0 +1,33 @@
+name: Merge Pull Request
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Pull Request branch'
+        required: true
+        default: 'develop'
+
+jobs:
+  merge-pr:
+    runs-on: ubuntu-latest
+    environment: Staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install crowdin
+        run: |
+          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+          sudo dpkg -i crowdin.deb
+
+      - name: Get branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Remove Crowdin branch
+        run: |
+          crowdin branch delete ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
+env:
+  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
