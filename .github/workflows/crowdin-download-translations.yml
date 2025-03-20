@@ -1,0 +1,69 @@
+name: Crowdin Download Translations
+run-name: Triggered by ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+  #   inputs:
+  #     target_branch:
+  #       description: 'Branch to push translations to'
+  #       required: false
+  #       default: 'VSAT-1502_i18n'
+  #       type: string
+  #     approved_only:
+  #       description: 'Download only approved translations'
+  #       required: false
+  #       default: true
+  #       type: boolean
+  # push:
+  #   branches:
+  #     - 'VSAT-1524'
+  #     - '!develop'
+  #     - '!master'
+
+jobs:
+  Download-Crowdin-Translations:
+    name: Download Crowdin Translations 
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install crowdin
+        run: |
+          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+          sudo dpkg -i crowdin.deb
+
+      - name: Get branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Print current branch name
+        run: echo "Current branch is ${{ steps.get_branch.outputs.branch_name }}"
+
+      - name: Download translations
+        run: |
+          crowdin download -b ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
+          # crowdin download --config app/crowdin.yml --branch ${{ steps.get_branch.outputs.branch_name }}
+      - name: Status
+        run: git status
+
+      # - name: Download translations
+      #   uses: crowdin/github-action@v2
+      #   timeout-minutes: 2
+      #   with:
+      #     config: 'app/crowdin.yml'
+      #     upload_sources: false
+      #     download_translations: true
+      #     skip_untranslated_strings: true
+      #     export_only_approved: ${{ inputs.approved_only || true }}
+
+      #     push_translations: false
+      #     push_sources: false
+      #     localization_branch_name: ${{ inputs.target_branch || 'VSAT-1502_i18n' }}
+      #     create_pull_request: false 
+          # pull_request_title: "[VSAT-1502] GH Action: New Crowdin translations"
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
