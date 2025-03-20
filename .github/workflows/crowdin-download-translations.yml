@@ -48,6 +48,20 @@ jobs:
       - name: Status
         run: git status
 
+      - name: Remove Crowdin package
+        run: rm crowdin.deb
+
+      - name: Set up git
+        run: |
+          git config --global user.email "demo@hostaway.com"
+          git config --global user.name "hostaway-github-bot"
+      
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "GH Action: Download Crowdin translations"
+          git push origin ${{ steps.get_branch.outputs.branch_name }}
+
       # - name: Download translations
       #   uses: crowdin/github-action@v2
       #   timeout-minutes: 2
