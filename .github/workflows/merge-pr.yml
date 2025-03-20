@@ -1,12 +1,11 @@
 name: Merge Pull Request
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Pull Request branch'
-        required: true
-        default: 'develop'
+  pull_request:
+    branches:
+      - 'main'
+    types:
+      - closed
 
 jobs:
   merge-pr:
