@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
    inputs:
       notify_translators:
-        description: 'Send a Slack message to translators'
+        description: 'Send a Slack message to translators if there are changes'
         required: false
         default: true
         type: boolean
