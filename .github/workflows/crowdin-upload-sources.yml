@@ -38,12 +38,7 @@ jobs:
       - name: Check if there are new strings in the Crowdin that needs to be translated
         id: check_new_strings
         run: |
-          echo "new_strings=$(crowdin status -b ${{ steps.get_branch.outputs.branch_name }} -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
-
-      - name: Check if there are new strings in the Crowdin that needs to be translated
-        id: check_new_strings1
-        run: |
-          echo "new_strings=$(crowdin status -b ${{ steps.get_branch.outputs.branch_name }} -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
+          echo "new_strings=$(crowdin status -b ${{ steps.get_branch.outputs.branch_name }} -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 == "100%") print $0}')" >> $GITHUB_OUTPUT
 
       - name: Print new strings
         if: github.event.inputs.notify_translators == 'true' && steps.check_new_strings.outputs.new_strings != ''
