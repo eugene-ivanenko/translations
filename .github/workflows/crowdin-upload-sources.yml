@@ -26,6 +26,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install crowdin
+        run: |
+          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
+          sudo dpkg -i crowdin.deb
+
       - name: Check if there are new strings in the Crowdin that needs to be translated
         id: check_new_strings
         run: |
@@ -36,11 +41,6 @@ jobs:
         run: |
           echo "New strings to be translated:"
           echo "${{ steps.check_new_strings.outputs.new_strings }}"
-
-      - name: Install crowdin
-        run: |
-          wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
-          sudo dpkg -i crowdin.deb
 
       - name: Get branch name
         id: get_branch
