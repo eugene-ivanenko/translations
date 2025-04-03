@@ -10,12 +10,12 @@ on:
     # or the Crowdin configuration file 
     # or the action itself
   workflow_dispatch:
-    # paths:
-    #   - app/src/locales/en/*.po
-    #   - app/crowdin.yml
-    #   - .github/workflows/crowdin-upload-sources.yml
-    # types:
-    #   - closed
+   inputs:
+      notify_translators:
+        description: 'Send a Slack message to translators'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   upload-sources-to-crowdin:
@@ -25,6 +25,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Check if there are new strings in the Crowdin that needs to be translated
+        id: check_new_strings
+        run: |
+          echo crowdin status -b main -l 'es=ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}' >> $GiTHUB_OUTPUT
+
+      - name: Print new strings
+        if: steps.check_new_strings.outputs.new_strings != ''
+        run: |
+          echo "New strings to be translated:"
+          echo "${{ steps.check_new_strings.outputs.new_strings }}"
 
       - name: Install crowdin
         run: |
