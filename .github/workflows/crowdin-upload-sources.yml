@@ -26,6 +26,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
       - name: Install crowdin
         run: |
           wget https://artifacts.crowdin.com/repo/deb/crowdin.deb -O crowdin.deb
@@ -34,12 +38,12 @@ jobs:
       - name: Check if there are new strings in the Crowdin that needs to be translated
         id: check_new_strings
         run: |
-          echo "new_strings=$(crowdin status -b main -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
+          echo "new_strings=$(crowdin status -b ${{ steps.get_branch.outputs.branch_name }} -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
 
       - name: Check if there are new strings in the Crowdin that needs to be translated
         id: check_new_strings1
         run: |
-          echo "new_strings=$(crowdin status -b main -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
+          echo "new_strings=$(crowdin status -b ${{ steps.get_branch.outputs.branch_name }} -l 'es-ES' | awk '/Proofread:/,/^$/' | grep -Eo '[a-z]{2}(-[A-Z]{2})?: [0-9]{1,3}%' | awk '{if ($2 != "100%") print $0}')" >> $GITHUB_OUTPUT
 
       - name: Print new strings1
         run: |
@@ -52,42 +56,38 @@ jobs:
           echo "New strings to be translated:"
           echo "${{ steps.check_new_strings.outputs.new_strings }}"
 
-      - name: Get branch name
-        id: get_branch
-        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
-
       - name: Print current branch name
         run: echo "Current branch is ${{ steps.get_branch.outputs.branch_name }}"
 
-      - name: Check if branch exists
-        id: check_branch
-        run: |
-          if crowdin branch list --config app/crowdin.yml | grep -q "${{ steps.get_branch.outputs.branch_name }}"; then
-            echo "branch_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "branch_exists=false" >> $GITHUB_OUTPUT
-          fi
+      # - name: Check if branch exists
+      #   id: check_branch
+      #   run: |
+      #     if crowdin branch list --config app/crowdin.yml | grep -q "${{ steps.get_branch.outputs.branch_name }}"; then
+      #       echo "branch_exists=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "branch_exists=false" >> $GITHUB_OUTPUT
+      #     fi
 
-      - name: Create branch if not exists
-        if: steps.check_branch.outputs.branch_exists == 'false'
-        run: |
-          echo "Creating branch ${{ steps.get_branch.outputs.branch_name }} in Crowdin"
-          crowdin branch add ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
+      # - name: Create branch if not exists
+      #   if: steps.check_branch.outputs.branch_exists == 'false'
+      #   run: |
+      #     echo "Creating branch ${{ steps.get_branch.outputs.branch_name }} in Crowdin"
+      #     crowdin branch add ${{ steps.get_branch.outputs.branch_name }} --config app/crowdin.yml
 
-      - name: Branch already exists
-        if: steps.check_branch.outputs.branch_exists == 'true'
-        run: echo "Branch ${{ steps.get_branch.outputs.branch_name }} already exists in Crowdin"
+      # - name: Branch already exists
+      #   if: steps.check_branch.outputs.branch_exists == 'true'
+      #   run: echo "Branch ${{ steps.get_branch.outputs.branch_name }} already exists in Crowdin"
         # run: crowdin branch add ${{ github.head_ref }}
       
-      - name: Upload sources
-        uses: crowdin/github-action@v2
-        timeout-minutes: 2
-        with:
-          config: 'app/crowdin.yml'
-          upload_sources: true
-          upload_translations: false
-          download_translations: false
-          create_pull_request: false
-          crowdin_branch_name: '${{ steps.get_branch.outputs.branch_name }}'
+      # - name: Upload sources
+      #   uses: crowdin/github-action@v2
+      #   timeout-minutes: 2
+      #   with:
+      #     config: 'app/crowdin.yml'
+      #     upload_sources: true
+      #     upload_translations: false
+      #     download_translations: false
+      #     create_pull_request: false
+      #     crowdin_branch_name: '${{ steps.get_branch.outputs.branch_name }}'
 env:
   CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
